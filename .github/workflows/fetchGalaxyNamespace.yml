@@ -11,14 +11,21 @@ jobs:
   FetchNamespace:
     runs-on: ubuntu-latest
     steps:
-    - run: |
+    - working-directory: ${{ github.event.inputs.namespace }}
+      run: |
         COUNT=1
         NEXTPAGE=1
         while (($COUNT > 0))
         do
-          RES=$(curl -sS https://galaxy.ansible.com/api/internal/ui/repos-and-collections/\?namespace\=community\&page\=$NEXTPAGE | jq -c '.collection')
+          RES=$(curl -sS https://galaxy.ansible.com/api/internal/ui/repos-and-collections/\?namespace\=${{ github.event.inputs.namespace }}\&page\=$NEXTPAGE | jq -c '.collection')
           echo $RES | jq -r '.results[] | "community-\(.name)-\(.latest_version.version).tar.gz"' | xargs -I{} sh -c "echo \"Downloading collection {}\"; curl -sSLOJ https://galaxy.ansible.com/download/{}"
           COUNT=$(echo $RES | jq -c '.results | length')
           NEXTPAGE=$(($NEXTPAGE+1))
         done
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: ${{ github.event.inputs.namespace }}
+        path: ${{ github.event.inputs.namespace }}
+
 
