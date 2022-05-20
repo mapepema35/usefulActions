@@ -3,9 +3,8 @@ name: Fetch Galaxy Namespace
 on:
   workflow_dispatch:
     inputs:
-      name:
+      namespace:
         description: 'Galaxy collection to fetch'
-        default: 'World'
         required: true
 
 jobs:
@@ -13,12 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        #!/bin/env sh
         COUNT=1
         NEXTPAGE=1
         while (($COUNT > 0))
         do
-          RES=$(curl -sS https://galaxy.ansible.com/api/internal/ui/repos-and-collections/\?namespace\=${{inputs.name}}\&page\=$NEXTPAGE | jq -c '.collection')
+          RES=$(curl -sS https://galaxy.ansible.com/api/internal/ui/repos-and-collections/\?namespace\=community\&page\=$NEXTPAGE | jq -c '.collection')
           echo $RES | jq -r '.results[] | "community-\(.name)-\(.latest_version.version).tar.gz"' | xargs -I{} sh -c "echo \"Downloading collection {}\"; curl -sSLOJ https://galaxy.ansible.com/download/{}"
           COUNT=$(echo $RES | jq -c '.results | length')
           NEXTPAGE=$(($NEXTPAGE+1))
