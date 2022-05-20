@@ -22,7 +22,7 @@ jobs:
         while (($COUNT > 0))
         do
           RES=$(curl -sS https://galaxy.ansible.com/api/internal/ui/repos-and-collections/\?namespace\=${{ github.event.inputs.namespace }}\&page\=$NEXTPAGE | jq -c '.collection')
-          echo $RES | jq -r '.results[] | "community-\(.name)-\(.latest_version.version).tar.gz"' | xargs -I{} sh -c "echo \"Downloading collection {}\"; curl -sSLOJ https://galaxy.ansible.com/download/{}"
+          echo $RES | jq -r '.results[] | "{{ github.event.inputs.namespace }}-\(.name)-\(.latest_version.version).tar.gz"' | xargs -I{} sh -c "echo \"Downloading collection {}\"; curl -sSLOJ https://galaxy.ansible.com/download/{}"
           COUNT=$(echo $RES | jq -c '.results | length')
           NEXTPAGE=$(($NEXTPAGE+1))
         done
