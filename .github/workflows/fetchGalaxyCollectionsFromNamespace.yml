@@ -1,18 +1,21 @@
 ---
-name: Fetch Galaxy Namespace
+name: Fetch Galaxy Collections From Namespace
 on:
   workflow_dispatch:
     inputs:
       namespace:
-        description: 'Galaxy collection to fetch'
+        description: 'Galaxy Namespace to fetch'
         required: true
 
 jobs:
   FetchNamespace:
     runs-on: ubuntu-latest
     steps:
-    - run: mkdir ${{ github.event.inputs.namespace }}
-    - working-directory: ${{ github.event.inputs.namespace }}
+    - name: Create delivery dir
+      run: mkdir ${{ github.event.inputs.namespace }}
+      
+    - name: Download every collections from namespace
+      working-directory: ${{ github.event.inputs.namespace }}
       run: |
         COUNT=1
         NEXTPAGE=1
@@ -23,10 +26,13 @@ jobs:
           COUNT=$(echo $RES | jq -c '.results | length')
           NEXTPAGE=$(($NEXTPAGE+1))
         done
+        
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: ${{ github.event.inputs.namespace }}
         path: ${{ github.event.inputs.namespace }}
+        retention-days: 2
+        
 
 
