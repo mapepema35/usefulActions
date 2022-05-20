@@ -11,6 +11,7 @@ jobs:
   FetchNamespace:
     runs-on: ubuntu-latest
     steps:
+    - run: mkdir ${{ github.event.inputs.namespace }}
     - working-directory: ${{ github.event.inputs.namespace }}
       run: |
         COUNT=1
