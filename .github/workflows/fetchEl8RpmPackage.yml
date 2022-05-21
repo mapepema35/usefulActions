@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: Install repositories
       run: |
-        mkdir "${{ github.event.inputs.packageName }}"
+        mkdir "export"
         sed -ie "s/enabled=.*/enabled=0/" /etc/yum/pluginconf.d/subscription-manager.conf || true
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-8.noarch.rpm
@@ -44,6 +44,6 @@ jobs:
     - name: Upload Archive
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: ${{ github.event.inputs.packageName }}
-        path: ${{ github.event.inputs.packageName }}
+        name: export
+        path: export
         retention-days: 2
