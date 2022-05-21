@@ -28,6 +28,17 @@ jobs:
         yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
         yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
         yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/extras/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/HighAvailability/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/RT/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/ResilientStorage/x86_64/os/
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        yum-config-manager --add-repo https://nginx.org/packages/centos/8/x86_64/
+        yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/12/redhat/rhel-8-x86_64/
+        yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/13/redhat/rhel-8-x86_64/
+        yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/14/redhat/rhel-8-x86_64/
+        yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/common/redhat/rhel-8-x86_64/
+        yum-config-manager --add-repo https://download.virtualbox.org/virtualbox/rpm/el/8/x86_64/
         yum clean all
         yum makecache
         
