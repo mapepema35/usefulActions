@@ -1,6 +1,6 @@
 ---
 
-name: Fetch yum package ans dependencies for target
+name: Fetch yum package and dependencies for target
 on:
   workflow_dispatch:
     inputs:
@@ -18,5 +18,19 @@ jobs:
     container:
       image: ${{ github.event.inputs.targetHost }}
     steps:
-    - name: Send greeting
-      run: yum repolist
+    - name: Install repositories
+      run: |
+        sed -ie "s/enabled=.*/enabled=0/" /etc/yum/pluginconf.d/subscription-manager.conf
+        yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        yum -y install https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-8.noarch.rpm
+        yum -y install yum-utils
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+        yum-config-manager --add-repo http://mirror.centos.org/centos/8-stream/PowerTools/x86_64/os/
+        yum clean all
+        yum makecache
+        
+    - name: Fetch package and dependencies
+      run: |
+        pwd
+        yum list ansible-core
