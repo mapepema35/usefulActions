@@ -1,0 +1,22 @@
+---
+
+name: Fetch yum package ans dependencies for target
+on:
+  workflow_dispatch:
+    inputs:
+      targetHost:
+        description: 'Target host'
+        default: 'redhat/ubi8:8.4'
+        required: true
+      packageName:
+        description: 'Package to fetch'
+        required: true
+
+jobs:
+  FetchingOnTarget:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ github.events.inputs.targetHost }}
+    steps:
+    - name: Send greeting
+      run: yum repolist
