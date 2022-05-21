@@ -16,7 +16,7 @@ jobs:
   FetchingOnTarget:
     runs-on: ubuntu-latest
     container:
-      image: '${{ github.events.inputs.targetHost }}'
+      image: ${{ github.event.inputs.targetHost }}
     steps:
     - name: Send greeting
       run: yum repolist
