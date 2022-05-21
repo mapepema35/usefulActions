@@ -1,6 +1,6 @@
 ---
 
-name: Fetch yum package and dependencies for Rhel8/Centos8 target
+name: Fetch RPM package and dependencies for Rhel8/Centos8 target
 on:
   workflow_dispatch:
     inputs:
@@ -21,7 +21,7 @@ jobs:
     - name: Install repositories
       run: |
         mkdir "${{ github.event.inputs.packageName }}"
-        sed -ie "s/enabled=.*/enabled=0/" /etc/yum/pluginconf.d/subscription-manager.conf
+        sed -ie "s/enabled=.*/enabled=0/" /etc/yum/pluginconf.d/subscription-manager.conf || true
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-8.noarch.rpm
         yum -y install yum-utils
