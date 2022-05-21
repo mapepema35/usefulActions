@@ -31,12 +31,19 @@ jobs:
         yum clean all
         yum makecache
         
+    - name: Check Match in repositories and test dry installation
+      run : |
+        repoquery *${{ github.event.inputs.packageName }}*
+        dnf info "${{ github.event.inputs.packageName }}"
+        yes no | dnf install "${{ github.event.inputs.packageName }}" || true
+        
     - name: Fetch package and dependencies
       run: |
         dnf download --resolve --downloaddir="${{ github.event.inputs.packageName }}/" ${{ github.event.inputs.packageName }}
         
-    - name: "Upload de l'archive"
+    - name: Upload Archive
       uses: actions/upload-artifact@v3.1.0
       with:
         name: ${{ github.event.inputs.packageName }}
         path: ${{ github.event.inputs.packageName }}
+        retention-days: 2
