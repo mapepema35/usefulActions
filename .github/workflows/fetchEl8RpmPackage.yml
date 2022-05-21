@@ -39,7 +39,7 @@ jobs:
         
     - name: Fetch package and dependencies
       run: |
-        dnf download --resolve --downloaddir="${{ github.event.inputs.packageName }}/" ${{ github.event.inputs.packageName }}
+        dnf download --resolve --downloaddir="export/" ${{ github.event.inputs.packageName }}
         
     - name: Upload Archive
       uses: actions/upload-artifact@v3.1.0
