@@ -1,6 +1,6 @@
 ---
 
-name: Fetch yum package and dependencies for target
+name: Fetch yum package and dependencies for Rhel8/Centos8 target
 on:
   workflow_dispatch:
     inputs:
@@ -20,6 +20,7 @@ jobs:
     steps:
     - name: Install repositories
       run: |
+        mkdir "${{ github.event.inputs.packageName }}"
         sed -ie "s/enabled=.*/enabled=0/" /etc/yum/pluginconf.d/subscription-manager.conf
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
         yum -y install https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-8.noarch.rpm
@@ -32,5 +33,10 @@ jobs:
         
     - name: Fetch package and dependencies
       run: |
-        pwd
-        yum list ansible-core
+        dnf download --resolve --downloaddir="${{ github.event.inputs.packageName }}/" ${{ github.event.inputs.packageName }}
+        
+    - name: "Upload de l'archive"
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: ${{ github.event.inputs.packageName }}
+        path: ${{ github.event.inputs.packageName }}
