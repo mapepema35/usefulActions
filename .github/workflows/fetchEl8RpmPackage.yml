@@ -39,6 +39,7 @@ jobs:
         yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/14/redhat/rhel-8-x86_64/
         yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/common/redhat/rhel-8-x86_64/
         yum-config-manager --add-repo https://download.virtualbox.org/virtualbox/rpm/el/8/x86_64/
+        yum-config-manager --add-repo https://releases.ansible.com/ansible-tower/cli/ansible-tower-cli-el8.repo
         yum clean all
         yum makecache
         
